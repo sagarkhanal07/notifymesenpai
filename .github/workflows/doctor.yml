@@ -1,0 +1,42 @@
+name: Monitor Something Specific ( Events, Orders, Enquiry, Tickets)
+
+on:
+  schedule:
+  - cron : "0 */1 * * *"
+
+jobs:
+  check_button_status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run script
+        run: node index.js
+
+  notify:
+    needs: check_button_status
+    runs-on: ubuntu-latest
+    if: ${{ needs.check_button_status.outputs.buttonStatus == 'enabled' }}
+
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.example.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Website Button Status Update"
+          body: "The website button is now enabled! You can place your order."
+          to: your@email.com
+          from: your@email.com
