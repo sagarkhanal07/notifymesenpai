@@ -36,7 +36,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Website Button Status Update"
+          subject: "Website Button Status Update!"
           body: "The website button is now enabled! You can place your order."
           to: ${{ secrets.TO_EMAIL }}
           from: ${{ secrets.FROM_EMAIL }}
