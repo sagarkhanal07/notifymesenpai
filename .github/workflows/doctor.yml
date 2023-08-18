@@ -26,17 +26,17 @@ jobs:
   notify:
     needs: check_button_status
     runs-on: ubuntu-latest
-    if: ${{ needs.check_button_status.outputs.buttonStatus == 'enabled' }}
+    if: ${{ needs.check_button_status.outputs.buttonStatus == 'disabled' }}
 
     steps:
       - name: Send email notification
         uses: dawidd6/action-send-mail@v2
         with:
-          server_address: smtp.example.com
+          server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "Website Button Status Update"
           body: "The website button is now enabled! You can place your order."
-          to: your@email.com
-          from: your@email.com
+          to: ${{ secrets.TO_EMAIL }}
+          from: ${{ secrets.FROM_EMAIL }}
