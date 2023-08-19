@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "Attaching screenshot..."
           echo "Sending email notification..."
-          echo "::set-env name=SCREENSHOT_PATH::$HOME/images/screenshot.png"
+          echo "$HOME/images/screenshot.png" > screenshot_path
 
       - name: Send email notification
         if: ${{ env.SCREENSHOT_PATH != '' }}
@@ -48,6 +48,6 @@ jobs:
           body: |
             The website button is now enabled! You can place your order.
 
-            ![Screenshot](${{ env.SCREENSHOT_PATH }})
+            ![Screenshot](https://github.com/${{ github.repository }}/raw/main/$screenshot_path)
           to: ${{ secrets.TO_EMAIL }}
           from: ${{ secrets.FROM_EMAIL }}
