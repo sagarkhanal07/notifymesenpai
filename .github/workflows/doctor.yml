@@ -37,7 +37,6 @@ jobs:
           echo "$HOME/images/screenshot.png" > screenshot_path
 
       - name: Send email notification
-        if: ${{ env.SCREENSHOT_PATH != '' }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
