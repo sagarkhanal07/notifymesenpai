@@ -1,5 +1,9 @@
 name: Monitor Button Status
 
+# on:
+#   schedule:
+#     - cron: "0 */5 * * *"
+
 on:
   push:
     branches: [main]
@@ -12,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -27,7 +31,7 @@ jobs:
         run: |
           buttonStatus=$(node index.js)
           echo "Button status: $buttonStatus"
-          echo "::set-output name=buttonStatus::$buttonStatus"
+          echo "$buttonStatus" >> $GITHUB_STATE
 
   notify:
     needs: check_button_status
@@ -36,7 +40,7 @@ jobs:
 
     steps:
       - name: Send email notification
-        uses: dawidd6/action-send-mail@v2
+        uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
