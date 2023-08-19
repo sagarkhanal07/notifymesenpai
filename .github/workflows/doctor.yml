@@ -30,10 +30,11 @@ jobs:
           echo "::set-output name=buttonStatus::$buttonStatus"
 
       - name: Attach screenshot and send email if button is disabled
+        if: ${{ steps.run_script.outputs.buttonStatus == 'Button is disabled.' }}
         run: |
           echo "Attaching screenshot..."
           mkdir -p $HOME/screenshot
-          cp ../images/screenshot.png $HOME/screenshot/
+          cp /images/screenshot.png $HOME/screenshot/
           echo "Sending email notification..."
           echo "::set-env name=SCREENSHOT_PATH::$HOME/screenshot/screenshot.png"
 
