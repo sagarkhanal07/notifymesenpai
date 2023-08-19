@@ -1,8 +1,9 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const path = require('path');
 
-const screenshotPath = "../images/screenshot.png";
-const readmePath = "../README.md";
+const screenshotPath = path.join(__dirname, '..', 'images', 'screenshot.png');
+const readmePath = path.join(__dirname, '..', 'README.md');
 
 async function checkButtonStatus(website, selector) {
     const browser = await puppeteer.launch({ headless: "new" });
