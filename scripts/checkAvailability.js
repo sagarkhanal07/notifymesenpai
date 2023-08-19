@@ -26,4 +26,4 @@ async function checkButtonStatus(website, selector) {
     }
 }
 
-checkButtonStatus('https://example.com', '#your-button-selector');
+module.exports = { checkButtonStatus }
