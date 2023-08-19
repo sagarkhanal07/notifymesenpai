@@ -5,7 +5,7 @@ const screenshotPath = "../images/screenshot.png";
 const readmePath = "../README.md";
 
 async function checkButtonStatus(website, selector) {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
     try {
