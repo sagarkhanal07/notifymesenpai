@@ -37,6 +37,7 @@ async function checkButtonStatus(website, selector) {
 function updateReadme(readmePath, status, screenshotPath) {
     const statusText = `Status:\n${status}\n![Button Screenshot](${screenshotPath})`;
     fs.writeFileSync(readmePath, statusText, { encoding: 'utf-8' });
+    return statusText;
 }
 
 module.exports = { checkButtonStatus };

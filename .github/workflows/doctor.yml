@@ -1,45 +1,43 @@
 name: Monitor Button Status
 
-# on:
-#   schedule:
-#     - cron: "0 */5 * * *"
-
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  check_button_status:
+  check_and_notify:
     runs-on: ubuntu-latest
-    outputs:
-      buttonStatus: ${{ steps.run_script.outputs.buttonStatus }}
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: '16'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run script
+      - name: Run script and capture button status
         id: run_script
         run: |
           buttonStatus=$(node index.js)
           echo "Button status: $buttonStatus"
           echo "$buttonStatus" >> $GITHUB_STATE
 
-  notify:
-    needs: check_button_status
-    runs-on: ubuntu-latest
-    if: ${{ needs.check_button_status.outputs.buttonStatus == 'Button is disabled.' }}
+      - name: Attach screenshot and send email if button is disabled
+        if: ${{ needs.check_and_notify.outputs.buttonStatus == 'Button is disabled.' }}
+        run: |
+          echo "Attaching screenshot..."
+          mkdir -p $HOME/screenshot
+          cp ../images/screenshot.png $HOME/screenshot/
+          echo "Sending email notification..."
+          echo "::set-env name=SCREENSHOT_PATH::$HOME/screenshot/screenshot.png"
 
-    steps:
       - name: Send email notification
+        if: ${{ env.SCREENSHOT_PATH != '' }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -47,6 +45,9 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "Website Button Status Update!"
-          body: "The website button is now enabled! You can place your order."
+          body: |
+            The website button is now enabled! You can place your order.
+
+            ![Screenshot](${{ env.SCREENSHOT_PATH }})
           to: ${{ secrets.TO_EMAIL }}
           from: ${{ secrets.FROM_EMAIL }}
