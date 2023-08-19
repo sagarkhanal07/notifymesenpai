@@ -30,7 +30,7 @@ jobs:
   notify:
     needs: check_button_status
     runs-on: ubuntu-latest
-    if: ${{ needs.check_button_status.outputs.buttonStatus == 'disabled' }}
+    if: ${{ needs.check_button_status.outputs.buttonStatus == 'Button is disabled.' }}
 
     steps:
       - name: Send email notification
