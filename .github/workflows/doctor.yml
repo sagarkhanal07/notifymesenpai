@@ -30,7 +30,6 @@ jobs:
           echo "::set-output name=buttonStatus::$buttonStatus"
 
       - name: Attach screenshot and send email if button is disabled
-        if: ${{ needs.check_button_status.outputs.buttonStatus == 'Button is disabled.' }}
         run: |
           echo "Attaching screenshot..."
           mkdir -p $HOME/screenshot
