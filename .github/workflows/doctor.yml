@@ -25,10 +25,10 @@ jobs:
         run: |
           buttonStatus=$(node index.js)
           echo "Button status: $buttonStatus"
-          echo "$buttonStatus" >> $GITHUB_ENV
+          echo "BUTTON_STATUS=$buttonStatus" >> $GITHUB_ENV
 
       - name: Attach screenshot and send email if button is disabled
-        if: ${{ needs.check_and_notify.outputs.run_script == 'Button is disabled.' }}
+        if: ${{ steps.run_script.outputs.BUTTON_STATUS == 'Button is disabled.' }}
         run: |
           echo "Attaching screenshot..."
           mkdir -p $HOME/screenshot
