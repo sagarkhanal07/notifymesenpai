@@ -13,7 +13,7 @@ async function checkButtonStatus(website,id) {
 
         if (isDisabled) {
             console.log('Button is disabled.');
-            process.exit(1);
+            process.exit(0);
         } else {
             console.log('Button is enabled.');
             process.exit(0);

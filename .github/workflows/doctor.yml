@@ -1,8 +1,11 @@
 name: Monitor Something Specific ( Events, Orders, Enquiry, Tickets)
 
-on:
-  schedule:
-  - cron : "0 */1 * * *"
+# on:
+#   schedule:
+#   - cron : "0 */1 * * *"
+
+branch
+ : main
 
 jobs:
   check_button_status:
