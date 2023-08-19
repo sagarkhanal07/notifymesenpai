@@ -1,14 +1,14 @@
 const puppeteer = require('puppeteer');
 
-async function checkButtonStatus(website,id) {
-    const browser = await puppeteer.launch({headless:"new"});
+async function checkButtonStatus(website, selector) {
+    const browser = await puppeteer.launch({ headless: "new" }); // Change "new" to "true"
     const page = await browser.newPage();
 
     try {
-        await page.goto(website); // Replace with the actual website URL
-        await page.waitForSelector(id); // Replace with the actual button ID or selector
+        await page.goto(website);
+        await page.waitForSelector(selector);
 
-        const button = await page.$(id);
+        const button = await page.$(selector);
         const isDisabled = await button.evaluate(btn => btn.disabled);
 
         if (isDisabled) {
@@ -25,7 +25,6 @@ async function checkButtonStatus(website,id) {
         await browser.close();
     }
 }
-
 
 module.exports = {
     checkButtonStatus
