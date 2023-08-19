@@ -4,8 +4,9 @@ name: Monitor Something Specific ( Events, Orders, Enquiry, Tickets)
 #   schedule:
 #   - cron : "0 */1 * * *"
 
-branch
- : main
+on:
+  push:
+    branches: [main]
 
 jobs:
   check_button_status:
