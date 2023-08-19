@@ -7,6 +7,8 @@ on:
 jobs:
   check_button_status:
     runs-on: ubuntu-latest
+    outputs:
+      buttonStatus: ${{ steps.run_script.outputs.buttonStatus }}
 
     steps:
       - name: Checkout code
@@ -21,12 +23,16 @@ jobs:
         run: npm install
 
       - name: Run script
-        run: node index.js
+        id: run_script
+        run: |
+          buttonStatus=$(node index.js)
+          echo "Button status: $buttonStatus"
+          echo "::set-output name=buttonStatus::$buttonStatus"
 
   notify:
     needs: check_button_status
     runs-on: ubuntu-latest
-    if: ${{ always() }} # This line ensures the "notify" job is always evaluated
+    if: ${{ needs.check_button_status.outputs.buttonStatus == 'Button is disabled.' }}
 
     steps:
       - name: Send email notification

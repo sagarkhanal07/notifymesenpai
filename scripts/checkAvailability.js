@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 async function checkButtonStatus(website, selector) {
-    const browser = await puppeteer.launch({ headless: "new" }); // Change "new" to "true"
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     try {
@@ -13,10 +13,10 @@ async function checkButtonStatus(website, selector) {
 
         if (isDisabled) {
             console.log('Button is disabled.');
-            // process.exit(0);
+            process.exit(0);
         } else {
             console.log('Button is enabled.');
-            // process.exit(0);
+            process.exit(1); // Different exit code for enabled
         }
     } catch (error) {
         console.error('Error:', error);
@@ -26,6 +26,4 @@ async function checkButtonStatus(website, selector) {
     }
 }
 
-module.exports = {
-    checkButtonStatus
-}
+checkButtonStatus('https://example.com', '#your-button-selector');
